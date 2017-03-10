@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hmusic.dao.SingerFullDao">
+<sql id="singerFullColumn">
+	s.singerid,singername,singerphoto,sex,introduction,st.singertypeid,singertypename
+</sql>
+<resultMap type="SingerFull" id="singerFullList">
+	<id column="singerid" property="singerid"/>
+	<result column="singername" property="singername"/>
+	<result column="singerphoto" property="singerphoto"/>
+	<result column="sex" property="sex"/>
+	<result column="introduction" property="introduction"/>
+	<result column="singertypeid" property="singertypeid"/>
+	<result column="singertypename" property="singertypename"/>	
+</resultMap>
+<select id="findSingerByTypeid" resultMap="singerFullList">
+	select <include refid="singerFullColumn"/> from singer s, singertype st, singer_singertype sst
+	where s.singerid = sst.singerid and st.singertypeid=sst.singertypeid and ss.singertypeid = #{singertypeid}
+	limit #{begin} , #{end}
+ </select>
+ 
+ <select id="findAll" resultMap="singerFullList">
+	select <include refid="singerFullColumn"/> from singer s, singertype st, singer_singertype sst
+	where s.singerid = sst.singerid and st.singertypeid=sst.singertypeid
+	limit #{begin} , #{end}
+ </select>
+</mapper>

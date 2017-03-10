@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="hmusic:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="hmusic.war">
+      <element id="artifact" artifact-name="hmusic:war exploded" />
+    </root>
+  </artifact>
+</component>

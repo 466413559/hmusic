@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hmusic.dao.FullMusicDao">
+	<sql id="fullMusicColumn">
+		m.musicid,musicname,musicpath,musicphoto,lyricspath,duration,clickrate,downloadrate,uploadtime,mt.musictypeid,musictypename,s.singerid,singername
+	</sql>
+	<resultMap type="FullMusic" id="singerFullList">
+		<id column="musicid" property="musicid" />
+		<result column="musicname" property="musicname" />
+		<result column="musicpath" property="musicpath" />
+		<result column="musicphoto" property="musicphoto" />
+		<result column="lyricspath" property="lyricspath" />
+		<result column="duration" property="duration" />
+		<result column="clickrate" property="clickrate" />
+		<result column="downloadrate" property="downloadrate" />
+		<result column="uploadtime" property="uploadtime" />
+
+		<result column="musictypeid" property="musictypeid" />
+		<result column="musictypename" property="musictypename" />
+
+		<result column="singername" property="singername" />
+		<result column="singerid" property="singerid" />
+	</resultMap>
+	<select id="findMusicByMusicName" resultMap="singerFullList">
+		select
+		<include refid="fullMusicColumn" />
+		from singer s, music m, musictype mt, music_musictype mmt,singer_music
+		sm
+		where s.singerid = sm.singerid and
+		m.musicid = sm.musicid and
+		m.musicid = mmt.musicid and
+		mmt.musctypeid = mt.musictypeid and
+		musicname LIKE concat(concat('%',#{musicname}),'%')
+		limit #{begin} ,
+		#{end}
+	</select>
+
+	<select id="findMusicByMusicTypeId" resultMap="singerFullList">
+		select
+		<include refid="fullMusicColumn" />
+		from singer s, music m, musictype mt, music_musictype mmt,singer_music
+		sm
+		where s.singerid = sm.singerid and
+		m.musicid = sm.musicid and
+		m.musicid = mmt.musicid and
+		mmt.musictypeid = mt.musictypeid and
+		mt.musictypeid = #{musictypeid}
+		order by ${order} desc
+		limit #{begin} ,
+		#{end}
+	</select>
+
+	<select id="findMusicBySingerId" resultMap="singerFullList">
+		select
+		<include refid="fullMusicColumn" />
+		from singer s, music m, musictype mt, music_musictype mmt,singer_music
+		sm
+		where s.singerid = sm.singerid and
+		m.musicid = sm.musicid and
+		m.musicid = mmt.musicid and
+		mmt.musictypeid = mt.musictypeid and
+		s.singerid = #{singerid}
+		order by ${order} desc
+		limit #{begin} , #{end}
+	</select>
+
+	<select id="findMusicBySonglistid" resultMap="singerFullList">
+		select
+		<include refid="fullMusicColumn" />
+		from singer s, music m, musictype mt, music_musictype mmt,singer_music
+		sm,songlist sl,songlist_music slm
+		where s.singerid = sm.singerid and
+		m.musicid = sm.musicid and
+		m.musicid = mmt.musicid and
+		mmt.musictypeid =
+		mt.musictypeid and
+		sl.songlistid = slm.songlistid and
+		slm.musicid =
+		m.musicid and
+		sl.songlsitid = #{songlistid}
+		limit #{begin} , #{end}
+	</select>
+
+	<select id="findAllMusic" resultMap="singerFullList">
+		select 
+		<include refid="fullMusicColumn" /> 
+		from singer s, music m, musictype mt, music_musictype mmt,singer_music sm
+		where s.singerid = sm.singerid and
+		m.musicid = sm.musicid and
+		m.musicid = mmt.musicid and
+		mmt.musictypeid = mt.musictypeid
+		order by ${order} desc
+		limit #{begin} , #{end}
+	</select>
+
+</mapper>
